@@ -5,12 +5,10 @@ import Combine
 @available(iOS 13.0, *)
 public final class Ease<E: Easable> {
     
-    public typealias EasePublisher = Published<E>.Publisher
-    
     @Published public private(set) var value: E
     @Published public var targetValue: E
     
-    var wraps: [Int: SpringWrap<E>] = [:]
+    var publishers: [Int: EasePublisher<E>] = [:]
     
     private var keys = (0...).makeIterator()
     
@@ -21,17 +19,17 @@ public final class Ease<E: Easable> {
         self.targetValue = value
     }
     
-    public func add(tension: E.F, damping: E.F, mass: E.F) -> EasePublisher {
+    public func add(tension: E.F, damping: E.F, mass: E.F) -> Published<E>.Publisher {
         let key = keys.next()!
-        wraps[key] = SpringWrap(value, tension, damping, mass)
+        publishers[key] = EasePublisher(value, tension, damping, mass)
         
-        return wraps[key]!.$value
+        return publishers[key]!.$value
     }
     
     public func update(_ time: TimeInterval) {
         
-        wraps.values.forEach { wrap in
-            wrap.interpolate(to: targetValue, duration: E.float(from: time))
+        publishers.values.forEach { publisher in
+            publisher.interpolate(to: targetValue, duration: E.float(from: time))
         }
     }
 }

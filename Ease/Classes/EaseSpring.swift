@@ -2,7 +2,7 @@ import Foundation
 import QuartzCore
 import Combine
 
-public struct Spring<F: FloatingPoint> {
+public struct EaseSpring<F: FloatingPoint> {
     
     let tension: F
     let damping: F

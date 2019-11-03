@@ -11,7 +11,7 @@ public protocol Easable {
 
 internal extension Easable where F == Float {
     
-    static func float(_ time: TimeInterval) -> Float {
+    static func float(_ time: TimeInterval) -> F {
         F(time)
     }
 }
@@ -53,13 +53,13 @@ internal extension Easable {
         return nil
     }
     
-    func rubberBanding(value: Self.F, range: ClosedRange<Self.F>, stiffness: Self.F) -> Self.F? {
+    func rubberBanding(value: Self.F, range: ClosedRange<Self.F>, resilience: Self.F) -> Self.F? {
         
         if value > range.upperBound {
-            let offset = abs(range.upperBound - value) / stiffness
+            let offset = abs(range.upperBound - value) / resilience
             return range.upperBound + offset
         } else if value < range.lowerBound {
-            let offset = abs(range.lowerBound - value) / stiffness
+            let offset = abs(range.lowerBound - value) / resilience
             return range.lowerBound - offset
         }
         
