@@ -11,3 +11,4 @@ let package = Package(
         .target(name: "Ease", path: "Ease/Classes")
     ]
 )
+
