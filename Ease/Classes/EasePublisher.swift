@@ -2,6 +2,29 @@ import Foundation
 import QuartzCore
 import Combine
 
+//@available(iOS 13.0, *)
+//public extension Ease {
+//    
+//    struct Publisher<E: Easable>: Combine.Publisher {
+//        public typealias Output = E
+//        public typealias Failure = Never
+//        
+//    }
+//}
+//
+//@available(iOS 13.0, *)
+//extension Subscribers {
+//    
+//    class Assign<Root, Input>: Subscriber, Cancellable {
+//        typealias Failure = Never
+//        
+//        init(object: Root, keyPath: ReferenceWritableKeyPath<Root, Input>) {
+//            
+//        }
+//    }
+//}
+
+
 @available(iOS 13.0, *)
 public final class EasePublisher<E: Easable> {
     
@@ -24,7 +47,13 @@ public final class EasePublisher<E: Easable> {
         spring = EaseSpring(tension, damping, mass)
     }
     
-    func interpolate(to targetValue: E, duration: E.F) {
+    func update(_ targetValue: E, _ duration: E.F) {
+        interpolate(to: targetValue, duration: duration)
+        rubberBand()
+        clamp()
+    }
+    
+    private func interpolate(to targetValue: E, duration: E.F) {
         let distance = value - targetValue
         let kx = distance * spring.tension
         let bv = velocity * spring.damping
@@ -35,7 +64,7 @@ public final class EasePublisher<E: Easable> {
         value = value + (velocity * duration)
     }
     
-    func rubberBand() {
+    private func rubberBand() {
         if let range = rubberBandingRange, let resilience = rubberBandingResilience {
             let values: [E.F] = value.values.enumeratedMap {
                 if let rubberBanded = value.rubberBanding(value: $1, range: range.closedRanges[$0], resilience: resilience) {
@@ -49,7 +78,7 @@ public final class EasePublisher<E: Easable> {
         }
     }
     
-    func clamp() {
+    private func clamp() {
         if let range = clampingRange {
             let clampedValues: [E.F] = value.values.enumeratedMap {
                 if let clampedValue = value.clamp(value: $1, range: range.closedRanges[$0]) {

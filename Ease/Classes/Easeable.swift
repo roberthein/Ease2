@@ -1,45 +1,37 @@
 import Foundation
+import CoreGraphics
 
 public protocol Easable {
     associatedtype F: FloatingPoint
     static var zero: Self { get }
     var values: [F] { get set }
     init(with values: [F])
-    static func float(from timeInterval: TimeInterval) -> F
-}
-
-
-internal extension Easable where F == Float {
-    
-    static func float(_ time: TimeInterval) -> F {
-        F(time)
-    }
 }
     
 internal extension Easable {
     
     static func - (lhs: Self, rhs: Self) -> Self {
-        return Self(with: lhs.values - rhs.values)
+        Self(with: lhs.values - rhs.values)
     }
     
     static func + (lhs: Self, rhs: Self) -> Self {
-        return Self(with: lhs.values + rhs.values)
+        Self(with: lhs.values + rhs.values)
     }
     
     static func * (lhs: Self, rhs: Self.F) -> Self {
-        return Self(with: lhs.values * rhs)
+        Self(with: lhs.values * rhs)
     }
     
     static func / (lhs: Self, rhs: Self.F) -> Self {
-        return Self(with: lhs.values / rhs)
+        Self(with: lhs.values / rhs)
     }
     
     static func < (lhs: Self, rhs: Self.F) -> Bool {
-        return lhs.values < rhs
+        lhs.values < rhs
     }
     
     static func > (lhs: Self, rhs: Self.F) -> Bool {
-        return lhs.values > rhs
+        lhs.values > rhs
     }
     
     func clamp(value: Self.F, range: ClosedRange<Self.F>) -> Self.F? {
@@ -67,6 +59,6 @@ internal extension Easable {
     }
     
     func set(_ value: Self.F) -> Self {
-        return Self(with: values.map { _ in value })
+        Self(with: values.map { _ in value })
     }
 }
