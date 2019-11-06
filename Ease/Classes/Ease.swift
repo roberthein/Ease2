@@ -9,7 +9,7 @@ public final class Ease<E: Easable> {
     @Published public var targetValue: E
     
     var disposal = Set<AnyCancellable>()
-    var publishers: [Int: EasePublisher<E>] = [:]
+    var publishers: [Int: EPublisher<E>] = [:]
     
     private var keys = (0...).makeIterator()
     
@@ -19,22 +19,32 @@ public final class Ease<E: Easable> {
     }
     
     public func add(_ springs: [EaseSpring<E.F>]) -> AnyPublisher<[E], Never> {
-        let sequence = Publishers.Sequence<[Published<E>.Publisher], Never>(sequence: springs.map({ spring in add(spring) }))
+        let sequence = Publishers.Sequence<[EPublisher<E>], Never>(sequence: springs.map({ spring in add(spring) }))
         return sequence.flatMap { $0 }.collect().eraseToAnyPublisher()
     }
     
-    public func add(_ spring: EaseSpring<E.F>) -> Published<E>.Publisher {
+    public func add(_ spring: EaseSpring<E.F>) -> EPublisher<E> {
         add(tension: spring.tension, damping: spring.damping, mass: spring.mass)
     }
     
-    public func add(tension: E.F, damping: E.F, mass: E.F) -> Published<E>.Publisher {
-        let key = keys.next()!
-        publishers[key] = EasePublisher(value, tension, damping, mass)
+    public func add(tension: E.F, damping: E.F, mass: E.F) -> EPublisher<E> {
+//        let key = keys.next()!
+//        publishers[key] = EasePublisher(value, tension, damping, mass)
+//        return publishers[key]!.$value
         
-        return publishers[key]!.$value
+        let key = keys.next()!
+        publishers[key] = EPublisher<E>(value, tension, damping, mass)
+        
+        return publishers[key]!
     }
     
     public func update(_ time: E.F) {
-        publishers.forEach { $1.update(targetValue, time) }
+        publishers.forEach {
+            var (_, publisher) = $0
+            publisher.update(targetValue, time)
+        }
     }
 }
+
+
+
