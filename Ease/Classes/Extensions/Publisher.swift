@@ -11,6 +11,6 @@ internal extension Publisher where Self.Output: Easable {
     
     func rubberBand(_ rubberBandRange: EaseRange<Self.Output>?, _ resilience: Self.Output.Scalar?) -> Publishers.Map<Self, Self.Output> {
         guard let rubberBandRange = rubberBandRange, let resilience = resilience else { return map { $0 } }
-        return map { $0.rubberBand(range: rubberBandRange, resilience: resilience) }
+        return map { $0.rubberBand(in: rubberBandRange, with: resilience) }
     }
 }

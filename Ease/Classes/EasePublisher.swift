@@ -12,7 +12,7 @@ public final class EasePublisher<E: Easable> {
         self.spring = spring
     }
     
-    public func update(_ targetValue: E, _ time: E.Scalar) {
-        subject.send(subject.value.lerp(targetValue: targetValue, spring: &spring, duration: time))
+    public func update(_ target: E, _ time: E.Scalar) {
+        subject.send(subject.value.lerp(target: target, spring: &spring, duration: time))
     }
 }

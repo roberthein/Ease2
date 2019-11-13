@@ -2,6 +2,7 @@ import Foundation
 
 //MARK: - The Protocol
 
+/// A protocol to homogenize value types that are 'Easable'.
 public protocol Easable {
     
     associatedtype Scalar: FloatingPoint
@@ -17,6 +18,7 @@ public protocol Easable {
 
 //MARK: - Defaults
 
+/// The default implementations for the 'Easable' protocol.
 extension Easable {
     
     public subscript(index: Int) -> Scalar {
@@ -34,6 +36,7 @@ extension Easable {
 
 //MARK: - Operator Overloading
 
+/// Operator overloading for calculations between 'Easables' and 'Scalars'.
 internal extension Easable {
     
     static func - (lhs: Self, rhs: Self) -> Self { .new(lhs.scalars.enumerated().map { $1 - rhs.scalars[$0] }) }
@@ -51,10 +54,11 @@ internal extension Easable {
 
 //MARK: - Linear Interpolation
 
+/// Add linear interpolation between two 'Easable' objects.
 internal extension Easable {
     
-    func lerp(targetValue: Self, spring: inout EaseSpring<Self>, duration: Self.Scalar) -> Self {
-        let distance = self - targetValue
+    func lerp(target: Self, spring: inout EaseSpring<Self>, duration: Self.Scalar) -> Self {
+        let distance = self - target
         let kx = distance * spring.tension
         let bv = spring.velocity * spring.damping
         let acceleration = (kx + bv) / spring.mass
@@ -68,6 +72,7 @@ internal extension Easable {
 
 //MARK: - Clamping
 
+/// Add clamping for 'Easable' objects.
 internal extension Easable {
     
     func clamp(range: EaseRange<Self>) -> Self {
@@ -88,13 +93,14 @@ internal extension Easable {
 
 //MARK: - Rubber Banding
 
+/// Add rubber banding for 'Easable' objects.
 internal extension Easable {
     
-    func rubberBand(range: EaseRange<Self>, resilience: Self.Scalar) -> Self {
-        .new(scalars.enumerated().map { rubberBanded(value: $1, range: range.closedRanges[$0], resilience: resilience) })
+    func rubberBand(in range: EaseRange<Self>, with resilience: Self.Scalar) -> Self {
+        .new(scalars.enumerated().map { rubberBanded(value: $1, in: range.closedRanges[$0], with: resilience) })
     }
     
-    private func rubberBanded(value: Self.Scalar, range: ClosedRange<Self.Scalar>, resilience: Self.Scalar) -> Self.Scalar {
+    private func rubberBanded(value: Self.Scalar, in range: ClosedRange<Self.Scalar>, with resilience: Self.Scalar) -> Self.Scalar {
         
         if value > range.upperBound {
             return range.upperBound + (abs(range.upperBound - value) / resilience)
