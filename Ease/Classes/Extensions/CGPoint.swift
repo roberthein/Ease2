@@ -1,16 +1,12 @@
 import Foundation
-import CoreGraphics
+import SceneKit.SceneKitTypes
 
 extension CGPoint: Easable {
     
-    public typealias F = CGFloat
+    public typealias Scalar = CGFloat
     
-    public var values: [CGFloat] {
+    public var scalars: [CGFloat] {
         get { [x, y] }
-        set { self = CGPoint(with: newValue) }
-    }
-    
-    public init(with values: [CGFloat]) {
-        self.init(x: values[0], y: values[1])
+        set { x = newValue[0]; y = newValue[1] }
     }
 }

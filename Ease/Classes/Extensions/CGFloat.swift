@@ -1,18 +1,14 @@
 import Foundation
-import CoreGraphics
+import SceneKit.SceneKitTypes
 
 extension CGFloat: Easable {
     
-    public typealias F = CGFloat
+    public typealias Scalar = CGFloat
+    
+    public var scalars: [CGFloat] {
+        get { [self] }
+        set { self = newValue[0] }
+    }
     
     public static var zero: CGFloat { 0 }
-    
-    public var values: [CGFloat] {
-        get { [self] }
-        set { self = CGFloat(with: newValue) }
-    }
-    
-    public init(with values: [CGFloat]) {
-        self.init(values[0])
-    }
 }

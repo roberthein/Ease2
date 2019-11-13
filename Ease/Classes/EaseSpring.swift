@@ -1,14 +1,16 @@
 import Foundation
-import QuartzCore
 import Combine
 
-public struct EaseSpring<F: FloatingPoint> {
+public struct EaseSpring<E: Easable> {
+
+    let tension: E.Scalar
+    let damping: E.Scalar
+    let mass: E.Scalar
     
-    let tension: F
-    let damping: F
-    let mass: F
-    
-    public init(_ tension: F, _ damping: F, _ mass: F) {
+    var velocity: E = .zero
+    var previousVelocity: E = .zero
+
+    public init(_ tension: E.Scalar, _ damping: E.Scalar, _ mass: E.Scalar) {
         self.tension = tension
         self.damping = damping
         self.mass = mass

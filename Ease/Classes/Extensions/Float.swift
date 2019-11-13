@@ -1,17 +1,14 @@
 import Foundation
+import SceneKit.SceneKitTypes
 
 extension Float: Easable {
     
-    public typealias F = Float
+    public typealias Scalar = Float
+    
+    public var scalars: [Float] {
+        get { [self] }
+        set { self = newValue[0] }
+    }
     
     public static var zero: Float { 0 }
-    
-    public var values: [Float] {
-        get { [self] }
-        set { self = Float(with: newValue) }
-    }
-    
-    public init(with values: [Float]) {
-        self.init(values[0])
-    }
 }

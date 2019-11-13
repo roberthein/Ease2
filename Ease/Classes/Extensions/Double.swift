@@ -1,18 +1,14 @@
 import Foundation
-import CoreGraphics
+import SceneKit.SceneKitTypes
 
 extension Double: Easable {
     
-    public typealias F = Double
+    public typealias Scalar = Double
+    
+    public var scalars: [Double] {
+        get { [self] }
+        set { self = newValue[0] }
+    }
     
     public static var zero: Double { 0 }
-    
-    public var values: [Double] {
-        get { [self] }
-        set { self = Double(with: newValue) }
-    }
-    
-    public init(with values: [Double]) {
-        self.init(values[0])
-    }
 }

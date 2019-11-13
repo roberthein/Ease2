@@ -1,16 +1,12 @@
 import Foundation
-import CoreGraphics
+import SceneKit.SceneKitTypes
 
 extension CGSize: Easable {
     
-    public typealias F = CGFloat
+    public typealias Scalar = CGFloat
     
-    public var values: [CGFloat] {
+    public var scalars: [CGFloat] {
         get { [width, height] }
-        set { self = CGSize(with: newValue) }
-    }
-    
-    public init(with values: [CGFloat]) {
-        self.init(width: values[0], height: values[1])
+        set { width = newValue[0]; height = newValue[1] }
     }
 }

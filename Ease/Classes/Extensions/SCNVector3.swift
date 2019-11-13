@@ -1,19 +1,14 @@
 import Foundation
-import QuartzCore
 import SceneKit.SceneKitTypes
 
 extension SCNVector3: Easable {
     
-    public typealias F = Float
+    public typealias Scalar = Float
     
-    public static var zero: SCNVector3 { SCNVector3Zero }
-    
-    public var values: [Float] {
+    public var scalars: [Float] {
         get { [x, y, z] }
-        set { self = SCNVector3(with: newValue) }
+        set { x = newValue[0]; y = newValue[1]; z = newValue[2] }
     }
     
-    public init(with values: [Float]) {
-        self.init(values[0], values[1], values[2])
-    }
+    public static var zero: SCNVector3 { .init(0, 0, 0) }
 }

@@ -1,16 +1,12 @@
 import Foundation
-import CoreGraphics
+import SceneKit.SceneKitTypes
 
 extension CGVector: Easable {
     
-    public typealias F = CGFloat
+    public typealias Scalar = CGFloat
     
-    public var values: [CGFloat] {
+    public var scalars: [CGFloat] {
         get { [dx, dy] }
-        set { self = CGVector(with: newValue) }
-    }
-    
-    public init(with values: [CGFloat]) {
-        self.init(dx: values[0], dy: values[1])
+        set { dx = newValue[0]; dy = newValue[1] }
     }
 }
