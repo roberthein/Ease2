@@ -36,20 +36,20 @@ extension Easable {
 
 //MARK: - Operator Overloading
 
-/// Operator overloading for calculations between 'Easables' and 'Scalars'.
+/// Operator overloading for calculations between 'Easables' and/or 'Scalars'.
 internal extension Easable {
     
     static func - (lhs: Self, rhs: Self) -> Self { .new(lhs.scalars.enumerated().map { $1 - rhs.scalars[$0] }) }
     
     static func + (lhs: Self, rhs: Self) -> Self { .new(lhs.scalars.enumerated().map { $1 + rhs.scalars[$0] }) }
     
-    static func * (lhs: Self, rhs: Self.Scalar) -> Self { .new(lhs.scalars.map { $0 * rhs }) }
+    static func * (lhs: Self, rhs: Scalar) -> Self { .new(lhs.scalars.map { $0 * rhs }) }
     
-    static func / (lhs: Self, rhs: Self.Scalar) -> Self { .new(lhs.scalars.map { $0 / rhs }) }
+    static func / (lhs: Self, rhs: Scalar) -> Self { .new(lhs.scalars.map { $0 / rhs }) }
     
-    static func < (lhs: Self, rhs: Self.Scalar) -> Bool { (lhs.scalars.map { $0 < rhs }).contains(true) }
+    static func < (lhs: Self, rhs: Scalar) -> Bool { (lhs.scalars.map { $0 < rhs }).contains(true) }
     
-    static func > (lhs: Self, rhs: Self.Scalar) -> Bool { (lhs.scalars.map { $0 > rhs }).contains(true) }
+    static func > (lhs: Self, rhs: Scalar) -> Bool { (lhs.scalars.map { $0 > rhs }).contains(true) }
 }
 
 //MARK: - Linear Interpolation
@@ -57,7 +57,9 @@ internal extension Easable {
 /// Add linear interpolation between two 'Easable' objects.
 internal extension Easable {
     
-    func lerp(target: Self, spring: inout EaseSpring<Self>, duration: Self.Scalar) -> Self {
+    func lerp(target: Self, spring: inout EaseSpring<Self>, duration: Scalar) -> Self {
+        spring.previousValue = self
+        
         let distance = self - target
         let kx = distance * spring.tension
         let bv = spring.velocity * spring.damping
@@ -79,7 +81,7 @@ internal extension Easable {
         .new(scalars.enumerated().map { clamped(value: $1, range: range.closedRanges[$0]) })
     }
     
-    private func clamped(value: Self.Scalar, range: ClosedRange<Self.Scalar>) -> Self.Scalar {
+    private func clamped(value: Scalar, range: ClosedRange<Scalar>) -> Scalar {
         
         if self < range.lowerBound {
             return range.lowerBound
@@ -96,11 +98,11 @@ internal extension Easable {
 /// Add rubber banding for 'Easable' objects.
 internal extension Easable {
     
-    func rubberBand(in range: EaseRange<Self>, with resilience: Self.Scalar) -> Self {
+    func rubberBand(in range: EaseRange<Self>, with resilience: Scalar) -> Self {
         .new(scalars.enumerated().map { rubberBanded(value: $1, in: range.closedRanges[$0], with: resilience) })
     }
     
-    private func rubberBanded(value: Self.Scalar, in range: ClosedRange<Self.Scalar>, with resilience: Self.Scalar) -> Self.Scalar {
+    private func rubberBanded(value: Scalar, in range: ClosedRange<Scalar>, with resilience: Scalar) -> Scalar {
         
         if value > range.upperBound {
             return range.upperBound + (abs(range.upperBound - value) / resilience)
@@ -109,5 +111,22 @@ internal extension Easable {
         }
         
         return value
+    }
+}
+
+//MARK: - Distance
+
+/// Calculate the distance between two 'Easable' objects.
+internal extension Easable {
+    
+    private func sq(_ value: Scalar) -> Scalar {
+        return value * value
+    }
+    
+    func distance(to target: Self) -> Scalar {
+        return sqrt(scalars.enumerated().map { (arg) -> Scalar in
+            let (i, scalar) = arg
+            return sq(scalar - target.scalars[i])
+        }.reduce(0, +))
     }
 }
