@@ -11,4 +11,8 @@ extension Int: Easable {
     }
     
     public static var zero: Int { 0 }
+    
+    public static func scalar(_ scalar: Float) -> Float {
+        return Float(scalar)
+    }
 }

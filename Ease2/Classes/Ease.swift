@@ -24,8 +24,12 @@ public final class Ease<E: Easable> {
         }
     }
     
-    public required init(_ value: E) {
-        target = value
+    public required init(_ value: E, targets: [E]? = nil) {
+        self.target = value
+        
+        if let targets = targets {
+            projection = EaseProjection(targets: targets)
+        }
     }
     
     /// Add spring parameters for the spring animation

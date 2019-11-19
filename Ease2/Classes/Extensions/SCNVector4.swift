@@ -11,4 +11,8 @@ extension SCNVector4: Easable {
     }
     
     public static var zero: SCNVector4 { .init(0, 0, 0, 0) }
+    
+    public static func scalar(_ scalar: Float) -> Float {
+        return Float(scalar)
+    }
 }

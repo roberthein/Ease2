@@ -10,7 +10,10 @@ internal final class EasePublisher<E: Easable> {
     var state: EaseState = .paused {
         didSet {
             guard state != oldValue else { return }
-            NotificationCenter.default.post(name: .easeState, object: state)
+            
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .easeState, object: self.state)
+            }
         }
     }
     

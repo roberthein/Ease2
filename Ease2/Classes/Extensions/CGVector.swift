@@ -9,4 +9,8 @@ extension CGVector: Easable {
         get { [dx, dy] }
         set { dx = newValue[0]; dy = newValue[1] }
     }
+    
+    public static func scalar(_ scalar: Float) -> CGFloat {
+        return CGFloat(scalar)
+    }
 }

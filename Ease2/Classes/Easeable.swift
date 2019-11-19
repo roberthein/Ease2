@@ -14,6 +14,8 @@ public protocol Easable {
     subscript(index: Int) -> Scalar { get set }
     
     static func new(_ scalars: [Scalar]) -> Self
+    
+    static func scalar(_ scalar: Float) -> Scalar
 }
 
 //MARK: - Defaults

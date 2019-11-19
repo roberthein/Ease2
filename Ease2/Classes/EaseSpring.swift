@@ -25,11 +25,5 @@ public struct EaseSpring<E: Easable> {
         let wasWasCloseToTarget = abs(previousPreviousValue.distance(to: targetValue)) < minimumStep
         
         return closeToTarget && wasCloseToTarget && wasWasCloseToTarget
-        
-//        print("velo:", velocity.distance(to: .zero))
-//        let targetReached = abs(value.distance(to: targetValue)) < minimumStep
-//        let velocityIsLow = abs(velocity.distance(to: .zero)) < minimumStep
-//
-//        return targetReached && velocityIsLow
     }
 }

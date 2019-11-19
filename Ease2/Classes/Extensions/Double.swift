@@ -11,4 +11,8 @@ extension Double: Easable {
     }
     
     public static var zero: Double { 0 }
+    
+    public static func scalar(_ scalar: Float) -> Double {
+        return Double(scalar)
+    }
 }

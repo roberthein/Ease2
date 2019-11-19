@@ -9,4 +9,8 @@ extension CGSize: Easable {
         get { [width, height] }
         set { width = newValue[0]; height = newValue[1] }
     }
+    
+    public static func scalar(_ scalar: Float) -> CGFloat {
+        return CGFloat(scalar)
+    }
 }

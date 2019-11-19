@@ -11,4 +11,8 @@ extension CGFloat: Easable {
     }
     
     public static var zero: CGFloat { 0 }
+    
+    public static func scalar(_ scalar: Float) -> CGFloat {
+        return CGFloat(scalar)
+    }
 }
