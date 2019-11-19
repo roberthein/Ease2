@@ -13,6 +13,8 @@ public final class Ease<E: Easable> {
     var publishers: [Int: EasePublisher<E>] = [:]
     private var ids = (0...).makeIterator()
     
+    public var projection: EaseProjection<E>?
+    
     public var state: EaseState {
         get {
             return publishers.values.map { $0.state }.contains(.playing) ? .playing : .paused

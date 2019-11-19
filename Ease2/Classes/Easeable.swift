@@ -19,14 +19,14 @@ public protocol Easable {
 //MARK: - Defaults
 
 /// The default implementations for the 'Easable' protocol.
-extension Easable {
+public extension Easable {
     
-    public subscript(index: Int) -> Scalar {
+    subscript(index: Int) -> Scalar {
         get { return scalars[index] }
         set { scalars[index] = newValue }
     }
     
-    public static func new(_ scalars: [Scalar]) -> Self {
+    static func new(_ scalars: [Scalar]) -> Self {
         var new: Self = .zero
         new.scalars = scalars
         

@@ -2,12 +2,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "Ease",
+    name: "Ease2",
     platforms: [.iOS(.v12)],
     products: [
-        .library(name: "Ease", targets: ["Ease"])
+        .library(name: "Ease2", targets: ["Ease2"])
     ],
     targets: [
-        .target(name: "Ease", path: "Ease/Classes")
+        .target(name: "Ease2", path: "Ease2/Classes")
     ]
 )
