@@ -50,6 +50,8 @@ internal extension Easable {
     static func < (lhs: Self, rhs: Scalar) -> Bool { (lhs.scalars.map { $0 < rhs }).contains(true) }
     
     static func > (lhs: Self, rhs: Scalar) -> Bool { (lhs.scalars.map { $0 > rhs }).contains(true) }
+    
+    static func == (lhs: Self, rhs: Self) -> Bool { (lhs.scalars.enumerated().map { $1 == rhs.scalars[$0] }).contains(false) == false }
 }
 
 //MARK: - Linear Interpolation
@@ -58,6 +60,7 @@ internal extension Easable {
 internal extension Easable {
     
     func lerp(target: Self, spring: inout EaseSpring<Self>, duration: Scalar) -> Self {
+        spring.previousPreviousValue = spring.previousValue
         spring.previousValue = self
         
         let distance = self - target
@@ -65,7 +68,6 @@ internal extension Easable {
         let bv = spring.velocity * spring.damping
         let acceleration = (kx + bv) / spring.mass
         
-        spring.previousVelocity = spring.velocity
         spring.velocity = spring.velocity - (acceleration * duration)
         
         return self + (spring.velocity * duration)

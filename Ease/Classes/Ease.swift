@@ -4,12 +4,22 @@ import Combine
 @available(iOS 13.0, *)
 public final class Ease<E: Easable> {
     
-    public var target: E
+    public var target: E {
+        didSet {
+            state = .playing
+        }
+    }
+    
     var publishers: [Int: EasePublisher<E>] = [:]
     private var ids = (0...).makeIterator()
     
     public var state: EaseState {
-        return publishers.values.map { $0.state }.contains(.playing) ? .playing : .paused
+        get {
+            return publishers.values.map { $0.state }.contains(.playing) ? .playing : .paused
+        }
+        set {
+            publishers.values.forEach { $0.state = newValue }
+        }
     }
     
     public required init(_ value: E) {
