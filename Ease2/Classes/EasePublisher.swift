@@ -11,8 +11,9 @@ internal final class EasePublisher<E: Easable> {
         didSet {
             guard state != oldValue else { return }
             
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: .easeState, object: self.state)
+            DispatchQueue.main.async { [weak self] in
+                guard let _self = self else { return }
+                NotificationCenter.default.post(name: .easeState, object: _self.state)
             }
         }
     }
