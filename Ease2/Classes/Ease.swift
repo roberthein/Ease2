@@ -15,13 +15,14 @@ public final class Ease<E: Easable> {
     
     public var projection: EaseProjection<E>?
     
+    public var velocity: E {
+        get { publishers.values.map { $0.spring.velocity }.first ?? .zero }
+        set { publishers.values.forEach { $0.spring.velocity = newValue } }
+    }
+    
     public var state: EaseState {
-        get {
-            return publishers.values.map { $0.state }.contains(.playing) ? .playing : .paused
-        }
-        set {
-            publishers.values.forEach { $0.state = newValue }
-        }
+        get { publishers.values.map { $0.state }.contains(.playing) ? .playing : .paused }
+        set { publishers.values.forEach { $0.state = newValue } }
     }
     
     public required init(_ value: E, targets: [E]? = nil) {
