@@ -16,12 +16,12 @@ public final class Ease<E: Easable> {
     public var projection: EaseProjection<E>?
     
     public var velocity: E {
-        get { publishers.values.map { $0.spring.velocity }.first ?? .zero }
+        get { publishers.values.map(\.spring.velocity).first ?? .zero }
         set { publishers.values.forEach { $0.spring.velocity = newValue } }
     }
     
     public var state: EaseState {
-        get { publishers.values.map { $0.state }.contains(.playing) ? .playing : .paused }
+        get { publishers.values.map(\.state).contains(.playing) ? .playing : .paused }
         set { publishers.values.forEach { $0.state = newValue } }
     }
     
