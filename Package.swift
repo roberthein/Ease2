@@ -3,7 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "Ease2",
-    platforms: [.iOS(.v12)],
+    platforms: [ .macOS(.v10_14), .iOS(.v12), .tvOS(.v12)],
     products: [
         .library(name: "Ease2", targets: ["Ease2"])
     ],
